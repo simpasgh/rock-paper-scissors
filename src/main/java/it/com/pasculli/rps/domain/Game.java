@@ -1,6 +1,7 @@
 package it.com.pasculli.rps.domain;
 
-import it.com.pasculli.rps.domain.enums.State;
+import it.com.pasculli.rps.domain.enums.Result;
+
 
 /**
  * Represent an abstract game
@@ -10,15 +11,32 @@ import it.com.pasculli.rps.domain.enums.State;
  */
 public abstract class Game {
 
-	protected Player playerOne;
-	protected Player playerTwo;
-	protected State currentState = State.STARTED;
-	protected Player winner;
+	protected Player playerOne = new Player();
+	protected Player playerTwo = new Player();
 
 	/**
-	 * Play the game
+	 * Play the game returning the winner
+	 * @return the winner {@link it.com.pasculli.rps.domain.Player} or null for a tie
 	 */
-	public abstract void play();
+	public Player play() {
+		
+		Player winner = null;
+
+		// compute the game result
+		Result result = playerOne.getMove().challenge(playerTwo.getMove());
+		switch (result) {
+		case WIN:
+			winner = playerOne;
+			break;
+		case LOSE:
+			winner = playerTwo;
+			break;
+		default:
+			break;
+		}
+		
+		return winner;
+	}
 
 	/**
 	 * Returns the {@link it.com.pasculli.rps.domain.Player} one
@@ -38,22 +56,6 @@ public abstract class Game {
 		return playerTwo;
 	}
 
-	/**
-	 * Returns the current {@link it.com.pasculli.rps.domain.enums.State} 
-	 * of the game
-	 * @return 
-	 */
-	public State getCurrentState() {
-		return currentState;
-	}
 
-	/**
-	 * Returns the winner {@link it.com.pasculli.rps.domain.Player}
-	 * 
-	 * @return
-	 */
-	public Player getWinner() {
-		return winner;
-	}
 
 }

@@ -1,39 +1,28 @@
 package it.com.pasculli.rps.domain;
 
-import it.com.pasculli.rps.domain.enums.State;
+import it.com.pasculli.rps.domain.enums.Move;
+import it.com.pasculli.rps.domain.strategies.AIStrategy;
+import it.com.pasculli.rps.domain.strategies.RandomAIStrategy;
 
 /**
  * Represent a game of the player against the computer
+ * 
  * @author simone
  *
  */
 public class PlayerVsComputerGame extends Game {
-	
-	
-	public PlayerVsComputerGame() {
-		this.playerOne = new Player();
-	}
 
+	private static final String COMPUTER_NAME = "Computer";
 
-	/*
-	 * (non-Javadoc)
-	 * @see it.com.pasculli.rps.domain.Game#play()
-	 */
-	@Override
-	public void play() {
+	public PlayerVsComputerGame(String playerName, Move playerMove) {
+
+		//set players names
+		this.playerOne.setName(playerName);
+		this.playerTwo.setName(COMPUTER_NAME);
 		
-		//check the state of the game and goes on
-		switch (currentState) {
-		case STARTED:
-			currentState = State.WAITING_PLAYER_NAME;
-			return;
-		case WAITING_PLAYER_NAME:
-			return;
-		default:
-			break;
-		}
-
-		
+		//set players moves
+		this.playerOne.setMove(playerMove);
+		AIStrategy strategy = new RandomAIStrategy(); //compute the computer choice
+		this.playerTwo.setMove(strategy.computeChoice());
 	}
-
 }
