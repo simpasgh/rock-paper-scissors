@@ -43,3 +43,8 @@ Version 1.0.0
 
 Simone Pasculli
 
+## API Documentation
+
+The Javadocs of this software are available inside the doc folder
+
+
