@@ -17,13 +17,13 @@ public class ComputerVsComputerGame extends Game {
 	public ComputerVsComputerGame() {
 
 		//set players names
-		this.playerOne.setName(COMPUTER_ONE);
-		this.playerTwo.setName(COMPUTER_TWO);
+		getPlayerOne().setName(COMPUTER_ONE);
+		getPlayerTwo().setName(COMPUTER_TWO);
 		
 		//set players moves
 		AIStrategy strategy = new RandomAIStrategy(); //compute the computer choices
-		this.playerOne.setMove(strategy.computeChoice());
-		this.playerTwo.setMove(strategy.computeChoice());	
+		getPlayerOne().setMove(strategy.computeChoice());
+		getPlayerTwo().setMove(strategy.computeChoice());	
 	}
 
 }

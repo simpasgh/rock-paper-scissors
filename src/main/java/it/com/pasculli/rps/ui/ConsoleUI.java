@@ -5,7 +5,9 @@ import it.com.pasculli.rps.domain.Game;
 import it.com.pasculli.rps.domain.Player;
 import it.com.pasculli.rps.domain.PlayerVsComputerGame;
 import it.com.pasculli.rps.domain.enums.Move;
+import it.com.pasculli.rps.exceptions.GameException;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -20,8 +22,8 @@ public class ConsoleUI implements Runnable {
 	private Game game;
 
 	public void run() {
-		System.out
-				.println("Welcome to the marvelous Rock - Paper - Scissor game!");
+		
+		System.out.println("Welcome to the marvelous Rock - Paper - Scissor game!");
 		Scanner scanner = new Scanner(System.in);
 
 		try {
@@ -29,8 +31,7 @@ public class ConsoleUI implements Runnable {
 				System.out.println("Choose your game type (press 1 or 2):");
 				System.out.println("1- Player vs Computer");
 				System.out.println("2- Computer vs Computer");
-				int choice = scanner.nextInt();
-				scanner.nextLine();
+				int choice = getIntegerChoice(scanner, 1, 2);
 				switch (choice) {
 				case 1: // player vs computer
 					initPlayerVsComputerGame(scanner);
@@ -45,22 +46,48 @@ public class ConsoleUI implements Runnable {
 				// play the game and print the result
 				playTheGame();
 				
-				// check if the player wants to play again
-				System.out.println("Want to play again? (y or n): ");
+				// check if the player wants to quit
+				System.out.println("Type 'q' followed by return to quit the game");
 				String reply = scanner.nextLine();
-				endGame = reply.startsWith("n") || reply.startsWith("N");
+				endGame = reply.equalsIgnoreCase("q");
 			}
-		} catch (Exception e) {
-			manageException(e);
+		} catch (GameException e) {
+			//print the error message
+			System.out.println(e.getMessage());
 		} finally {
 			scanner.close();
 		}
+	}
+
+	/*
+	 * Get integer option from the keyboard, printing a message if the input is not valid
+	 */
+	private int getIntegerChoice(Scanner scanner, int min, int max) {
+		
+		boolean done = false;
+		int choice = 0;
+		while(!done) {
+			try {
+				choice = scanner.nextInt();
+				if(choice < min || choice > max) {
+					System.out.println("Choose one of the options provided");
+				} else {
+					done = true;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Please insert a valid numeric choice");
+			} finally {
+				scanner.nextLine();
+			}
+		}
+		
+		return choice;
 	}
 	
 	/*
 	 * Manage the UI for player vs computer
 	 */
-	private void initPlayerVsComputerGame(Scanner scanner) {
+	private void initPlayerVsComputerGame(Scanner scanner) throws GameException {
 
 		// get the player name
 		System.out.println("Insert your name: ");
@@ -71,8 +98,7 @@ public class ConsoleUI implements Runnable {
 		System.out.println("1- Rock");
 		System.out.println("2- Paper");
 		System.out.println("3- Scissors");
-		int moveInput = scanner.nextInt();
-		scanner.nextLine(); // clean the stream
+		int moveInput = getIntegerChoice(scanner, 1, 3);
 
 		// initialize a new game
 		game = new PlayerVsComputerGame(playerName, Move.valueOf(moveInput));
@@ -81,7 +107,7 @@ public class ConsoleUI implements Runnable {
 	/*
 	 * Play the game and print the result
 	 */
-	private void playTheGame() {
+	private void playTheGame() throws GameException {
 		
 		Player human = game.getPlayerOne();
 		Player computer = game.getPlayerTwo();
@@ -96,11 +122,4 @@ public class ConsoleUI implements Runnable {
 			System.out.println("There is no winner, we have a tie!");
 		}
 	}
-
-	private void manageException(Exception e) {
-		e.printStackTrace();
-	}
-
-
-
 }

@@ -15,34 +15,43 @@ public enum Move {
 	private Integer id;
 	private List<Integer> defeat;
 	
+	/**
+	 * Constructor of the move
+	 * @param id identifier of the move
+	 * @param defeat identifiers of the moves that this move beats
+	 */
 	private Move(Integer id, Integer... defeat) {
 		this.id = id;
 		this.defeat = Arrays.asList(defeat);
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public List<Integer> getDefeat() {
-		return this.defeat;
-	}
-	
+	/**
+	 * Challenge another move
+	 * @param move the opponent move
+	 * @return the {@link it.com.pasculli.rps.domain.enums.Result} of the challenge
+	 */
 	public Result challenge(Move move) {
 		
-		if(defeat.contains(move.getId())) {
-			return Result.WIN;
-		} else if(move.getDefeat().contains(this.id)) {
-			return Result.LOSE;
-		} 
+		Result result = null;
 		
-		return Result.TIE;
+		if(move != null) {
+			if(defeat.contains(move.getId())) {
+				result = Result.WIN;
+			} else if(move.getDefeat().contains(this.id)) {
+				result = Result.LOSE;
+			} else {
+				result = Result.TIE;
+			}
+		}
+		
+		return result;
 	}
 	
+	/**
+	 * Returns the corresponding enum value of the passed id
+	 * @param id
+	 * @return
+	 */
 	public static Move valueOf(Integer id) {
 		
 		for(Move move: values()) {
@@ -52,6 +61,14 @@ public enum Move {
 		}
 		return null;
 	}
+	
 
+	public Integer getId() {
+		return id;
+	}
+	
+	public List<Integer> getDefeat() {
+		return this.defeat;
+	}
 
 }
