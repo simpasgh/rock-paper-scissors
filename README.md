@@ -4,8 +4,6 @@ The historical game Rock - Paper - Scissors now on your computer! Challenge the 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ### Prerequisites
 
 Ensure that you have Maven and Java installed on your machine.
